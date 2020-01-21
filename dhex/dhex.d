@@ -8,7 +8,7 @@ module dhexd;
 import std.stdio,
 		std.file;
 
-string app_version = "0.1.1";
+string app_version = "0.1.2";
 int chunck_size = 16;
 
 void on_file(string file_name) {
@@ -21,7 +21,17 @@ void on_file(string file_name) {
 		foreach (b; buffer) {
 			writef ("%02x ", b);
 		}
-		writef("\n");
+		writef(" '");
+		foreach (b; buffer) {
+			char c;
+			if (b < 32 ) {
+				c = '.';
+			} else {
+				c = cast(char)b;
+			}
+			writef ("%c ", c);
+		}
+		writef("'\n");
 	}
 }
 
