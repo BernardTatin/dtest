@@ -1,16 +1,23 @@
 /*
  * dhexd.d
  * hexdump in D
+ ***
+ $ rm -fv *.obj *.exe
+ $ dmd dhexd-tools.d dhex.d -of=dhex.exe \
+ 	&& ./dhex.exe dhexd-tools.obj *.md
+ ***
  */
 
 module dhexd;
 
 import std.stdio,
 		std.file,
+		std.algorithm.iteration,
 		dhexd_tools;
 
-const string app_version = "0.2.0";
+const string app_version = "0.2.1";
 const int chunck_size = 16;
+const char separator = '|';
 
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
@@ -28,11 +35,9 @@ void on_file(string file_name) {
 				writef("   ");
 			}
 		}
-		writef(" '");
-		foreach (b; buffer) {
-			writef ("%c", byte2char(b));
-		}
-		writef("'\n");
+		writef(" %c%s%c\n", separator,
+			buffer.map!(a => byte2char(a)),
+			separator);
 	}
 }
 
