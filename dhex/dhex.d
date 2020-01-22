@@ -10,13 +10,13 @@
 
 module dhexd;
 
-import std.stdio,
-		std.file,
-		std.algorithm.iteration,
-		std.format,
-		dhexd_tools;
+import std.algorithm.iteration: reduce, map;
+import std.file: exists, isFile;
+import std.stdio: writef, writefln, File, chunks;
+import std.format: sformat;
+import dhexd_tools;
 
-const string app_version = "0.2.1";
+const string app_version = "0.2.2";
 const int chunck_size = 16;
 const char separator = '|';
 
