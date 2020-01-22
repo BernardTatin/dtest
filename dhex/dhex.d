@@ -6,21 +6,11 @@
 module dhexd;
 
 import std.stdio,
-		std.file;
+		std.file,
+		dhexd_tools;
 
 string app_version = "0.2.0";
 int chunck_size = 16;
-
-pure char byte2char(ubyte b) {
-	char c;
-
-	if (b < 32 || b > 127) {
-		c = '.';
-	} else {
-		c = cast(char)b;
-	}
-	return c;
-}
 
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
