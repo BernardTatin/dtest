@@ -9,8 +9,8 @@ import std.stdio,
 		std.file,
 		dhexd_tools;
 
-string app_version = "0.2.0";
-int chunck_size = 16;
+const string app_version = "0.2.0";
+const int chunck_size = 16;
 
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
