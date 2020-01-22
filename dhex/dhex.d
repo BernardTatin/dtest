@@ -1,48 +1,43 @@
 /*
  * dhexd.d
  * hexdump in D
+ ***
+ $ rm -fv *.obj *.exe
+ $ dmd dhexd-tools.d dhex.d -of=dhex.exe \
+ 	&& ./dhex.exe dhexd-tools.obj *.md
+ ***
  */
 
 module dhexd;
 
 import std.stdio,
-		std.file;
+		std.file,
+		std.algorithm.iteration,
+		std.format,
+		dhexd_tools;
 
-string app_version = "0.2.0";
-int chunck_size = 16;
-
-pure char byte2char(ubyte b) {
-	char c;
-
-	if (b < 32 || b > 127) {
-		c = '.';
-	} else {
-		c = cast(char)b;
-	}
-	return c;
-}
+const string app_version = "0.2.1";
+const int chunck_size = 16;
+const char separator = '|';
 
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
 	int address = 0;
+	char[3]  hbuf;
 
 	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
-		writef ("%08x: ", address);
+		writef ("%08x: %s", address,
+			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
 		address += chunck_size;
-		foreach (b; buffer) {
-			writef ("%02x ", b);
-		}
 		if (buffer.length < chunck_size) {
 			int d = chunck_size - buffer.length;
 			foreach (_; 0 .. d) {
 				writef("   ");
 			}
 		}
-		writef(" '");
-		foreach (b; buffer) {
-			writef ("%c", byte2char(b));
-		}
-		writef("'\n");
+		writef(" %c%s%c\n", separator,
+			buffer.map!(a => byte2char(a)),
+			separator);
 	}
 }
 
