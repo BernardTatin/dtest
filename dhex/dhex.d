@@ -11,6 +11,17 @@ import std.stdio,
 string app_version = "0.2.0";
 int chunck_size = 16;
 
+pure char byte2char(ubyte b) {
+	char c;
+
+	if (b < 32 || b > 127) {
+		c = '.';
+	} else {
+		c = cast(char)b;
+	}
+	return c;
+}
+
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
 	int address = 0;
@@ -29,13 +40,7 @@ void on_file(string file_name) {
 		}
 		writef(" '");
 		foreach (b; buffer) {
-			char c;
-			if (b < 32 || b > 127) {
-				c = '.';
-			} else {
-				c = cast(char)b;
-			}
-			writef ("%c", c);
+			writef ("%c", byte2char(b));
 		}
 		writef("'\n");
 	}
