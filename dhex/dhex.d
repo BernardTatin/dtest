@@ -13,6 +13,7 @@ module dhexd;
 import std.stdio,
 		std.file,
 		std.algorithm.iteration,
+		std.format,
 		dhexd_tools;
 
 const string app_version = "0.2.1";
@@ -22,13 +23,12 @@ const char separator = '|';
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
 	int address = 0;
+	char[3]  hbuf;
 
 	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
-		writef ("%08x: ", address);
+		writef ("%08x: %s", address,
+			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
 		address += chunck_size;
-		foreach (b; buffer) {
-			writef ("%02x ", b);
-		}
 		if (buffer.length < chunck_size) {
 			int d = chunck_size - buffer.length;
 			foreach (_; 0 .. d) {
