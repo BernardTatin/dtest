@@ -3,7 +3,7 @@
 # with Digital Mars make
 #
 
-D = dmd -I=.
+D = dmd -I=. -release
 
 MAIN = dhex
 TOOLS = dhexd_tools
@@ -19,8 +19,9 @@ $(MAIN).obj: $(MAIN).d
 $(TOOLS).obj: $(TOOLS).d 
 	$(D) -c  $** -of=$@
 
-test: all
-	./$(MAIN).exe  dhexd-tools.obj *.md
+test:
+	make all
+	./$(MAIN).exe  dhexd-tools.obj README.md
 
 clean:
 	rm -fv $(MAIN).exe $(MAIN).obj $(TOOLS).obj
