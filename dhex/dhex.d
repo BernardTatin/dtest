@@ -46,6 +46,9 @@ void main(string[] args) {
 	bool isInOptions = true;
 	immutable string progname = args[0];
 
+	if (args.length == 1) {
+		on_help(progname);
+	}
 	foreach (string a; args[1..$]) {
 		if (isInOptions) {
 			switch (a) {
