@@ -1,9 +1,13 @@
 # .gitignore
+!Makefile.GNU
+
+dhex
 
 *.exe
 *.obj
 *.o
 
+.*.swp
 *.bak
 *.tmp
 *.log

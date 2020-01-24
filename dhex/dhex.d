@@ -31,7 +31,7 @@ void on_file(string file_name) {
 			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
 		address += chunck_size;
 		if (buffer.length < chunck_size) {
-			int d = chunck_size - buffer.length;
+			int d = chunck_size - cast(int)buffer.length;
 			foreach (_; 0 .. d) {
 				writef("   ");
 			}
