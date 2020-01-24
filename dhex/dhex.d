@@ -20,6 +20,7 @@ import dhexd_infos;
 
 const int chunck_size = 16;
 const char separator = '|';
+bool quiet = false;
 
 void on_file(string file_name) {
 	auto f = File(file_name, "r");
@@ -27,7 +28,7 @@ void on_file(string file_name) {
 	char[3]  hbuf;
 
 	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
-		writef ("%08x: %s", address,
+		writef ("%08x %s", address,
 			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
 		address += chunck_size;
 		if (buffer.length < chunck_size) {
@@ -46,7 +47,9 @@ void wrap_on_file(string file_name) {
 	if (!exists(file_name) || !isFile(file_name)) {
 		writefln ("-> ERROR: %s is not a file", file_name);
 	} else {
-		writefln("-> %s", file_name);
+		if (!quiet) {
+			writefln("-> %s", file_name);
+		}
 		on_file (file_name);
 	}
 }
@@ -68,6 +71,10 @@ void main(string[] args) {
 				case "-v":
 				case "--version":
 					on_version(progname);
+					break;
+				case "-q":
+				case "--quiet":
+					quiet = true;
 					break;
 				default:
 					isInOptions = false;
