@@ -3,3 +3,8 @@
 *.exe
 *.obj
 *.o
+
+*.bak
+*.tmp
+*.log
+
