@@ -42,6 +42,15 @@ void on_file(string file_name) {
 	}
 }
 
+void wrap_on_file(string file_name) {
+	if (!exists(file_name) || !isFile(file_name)) {
+		writefln ("-> ERROR: %s is not a file", file_name);
+	} else {
+		writefln("-> %s", file_name);
+		on_file (file_name);
+	}
+}
+
 void main(string[] args) {
 	bool isInOptions = true;
 	immutable string progname = args[0];
@@ -62,16 +71,11 @@ void main(string[] args) {
 					break;
 				default:
 					isInOptions = false;
+					wrap_on_file(a);
 					break;
 			}
-		}
-		if (!isInOptions) {
-			if (!exists(a) || !isFile(a)) {
-				writefln ("-> ERROR: %s is not a file", a);
-			} else {
-				writefln("-> %s", a);
-				on_file (a);
-			}
+		} else {
+			wrap_on_file(a);
 		}
 	}
 }
