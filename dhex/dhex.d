@@ -30,7 +30,7 @@ void on_file(string file_name) {
 	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
 		writef ("%08x %s", address,
 			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
-		address += chunck_size;
+		address += cast(int)buffer.length;
 		if (buffer.length < chunck_size) {
 			int d = chunck_size - cast(int)buffer.length;
 			foreach (_; 0 .. d) {
@@ -41,6 +41,7 @@ void on_file(string file_name) {
 			buffer.map!(a => byte2char(a)),
 			separator);
 	}
+	writef("%08x\n", address);
 }
 
 void wrap_on_file(string file_name) {
