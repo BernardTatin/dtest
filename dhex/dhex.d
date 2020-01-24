@@ -28,11 +28,12 @@ void on_file(string file_name) {
 	char[3]  hbuf;
 
 	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
+		immutable int blen = cast(int)buffer.length;
 		writef ("%08x %s", address,
 			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
-		address += cast(int)buffer.length;
-		if (buffer.length < chunck_size) {
-			int d = chunck_size - cast(int)buffer.length;
+		address += blen;
+		if (blen < chunck_size) {
+			int d = chunck_size - blen;
 			foreach (_; 0 .. d) {
 				writef("   ");
 			}
