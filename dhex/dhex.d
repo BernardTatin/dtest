@@ -14,9 +14,10 @@ import std.algorithm.iteration: reduce, map;
 import std.file: exists, isFile;
 import std.stdio: writef, writefln, File, chunks;
 import std.format: sformat;
-import dhexd_tools;
 
-const string app_version = "0.2.2";
+import dhexd_tools;
+import dhexd_infos;
+
 const int chunck_size = 16;
 const char separator = '|';
 
@@ -42,15 +43,32 @@ void on_file(string file_name) {
 }
 
 void main(string[] args) {
-	writefln("dhexd %s\n", app_version);
-	writefln("prog name: %s", args[0]);
+	bool isInOptions = true;
+	immutable string progname = args[0];
+
 	foreach (string a; args[1..$]) {
-		writefln("-> %s", a);
-		if (!exists(a) || !isFile(a)) {
-			writefln ("-> ERROR: %s is not a file", a);
-		} else {
-			writefln ("-> SUCCESS: %s is a file!!!", a);
-			on_file (a);
+		if (isInOptions) {
+			switch (a) {
+				case "-h":
+				case "--help":
+					on_help(progname);
+					break;
+				case "-v":
+				case "--version":
+					on_version(progname);
+					break;
+				default:
+					isInOptions = false;
+					break;
+			}
+		}
+		if (!isInOptions) {
+			if (!exists(a) || !isFile(a)) {
+				writefln ("-> ERROR: %s is not a file", a);
+			} else {
+				writefln("-> %s", a);
+				on_file (a);
+			}
 		}
 	}
 }
