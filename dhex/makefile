@@ -3,7 +3,7 @@
 # with Digital Mars make
 #
 
-D = dmd -I=. -release
+D = dmd -color -I=. -release
 
 MAIN = dhex
 TOOLS = dhexd_tools
