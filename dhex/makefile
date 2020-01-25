@@ -14,13 +14,13 @@ all: $(MAIN).exe
 $(MAIN).exe: $(MAIN).obj $(TOOLS).obj $(INFOS).obj
 	$(D) $** -of=$@
 
-$(MAIN).obj: $(MAIN).d 
+$(MAIN).obj: $(MAIN).d
 	$(D) -c  $** -of=$@
 
-$(INFOS).obj: $(INFOS).d 
+$(INFOS).obj: $(INFOS).d
 	$(D) -c  $** -of=$@
 
-$(TOOLS).obj: $(TOOLS).d 
+$(TOOLS).obj: $(TOOLS).d
 	$(D) -c  $** -of=$@
 
 test:
@@ -33,3 +33,5 @@ test:
 
 clean:
 	rm -fv $(MAIN).exe $(MAIN).obj $(TOOLS).obj $(INFOS).obj
+
+# Digital Mars make needs some lines
