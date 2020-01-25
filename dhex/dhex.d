@@ -24,14 +24,20 @@ bool quiet = false;
 
 void wrap_on_file(immutable(string) file_name) {
 	void on_file() {
+		auto byte2string(immutable(ubyte) a) {
+			static char[3]  hbuf;
+			return  cast(string)sformat(hbuf[], "%02x ", a);
+		}
+		pure string concat_strings(immutable(string) a, immutable(string) b) {
+			return a ~ b;
+		}
 		auto f = File(file_name, "r");
 		int address = 0;
-		char[3]  hbuf;
 
 		foreach (ubyte[] buffer; chunks(f, chunck_size)) {
 			immutable int buffer_len = cast(int)buffer.length;
 			writef ("%08x %s", address,
-				reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
+				reduce!((a, b) => concat_strings(a, b))("", buffer.map!(a => byte2string(a))));
 			address += buffer_len;
 			if (buffer_len < chunck_size) {
 				int d = chunck_size - buffer_len;
