@@ -22,37 +22,38 @@ const int chunck_size = 16;
 const char separator = '|';
 bool quiet = false;
 
-void on_file(string file_name) {
-	auto f = File(file_name, "r");
-	int address = 0;
-	char[3]  hbuf;
+void wrap_on_file(immutable(string) file_name) {
+	void on_file() {
+		auto f = File(file_name, "r");
+		int address = 0;
+		char[3]  hbuf;
 
-	foreach (ubyte[] buffer; chunks(f, chunck_size)) {
-		immutable int blen = cast(int)buffer.length;
-		writef ("%08x %s", address,
-			reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
-		address += blen;
-		if (blen < chunck_size) {
-			int d = chunck_size - blen;
-			foreach (_; 0 .. d) {
-				writef("   ");
+		foreach (ubyte[] buffer; chunks(f, chunck_size)) {
+			immutable int buffer_len = cast(int)buffer.length;
+			writef ("%08x %s", address,
+				reduce!((a, b) => a ~ b)("", buffer.map!(a => cast(string)sformat(hbuf[], "%02x ", a))));
+			address += buffer_len;
+			if (buffer_len < chunck_size) {
+				int d = chunck_size - buffer_len;
+				foreach (_; 0 .. d) {
+					writef("   ");
+				}
 			}
+			writef(" %c%s%c\n", separator,
+				buffer.map!(a => byte2char(a)),
+				separator);
 		}
-		writef(" %c%s%c\n", separator,
-			buffer.map!(a => byte2char(a)),
-			separator);
+		writef("%08x\n", address);
 	}
-	writef("%08x\n", address);
-}
 
-void wrap_on_file(string file_name) {
+
 	if (!exists(file_name) || !isFile(file_name)) {
 		writefln ("-> ERROR: %s is not a file", file_name);
 	} else {
 		if (!quiet) {
 			writefln("-> %s", file_name);
 		}
-		on_file (file_name);
+		on_file ();
 	}
 }
 
