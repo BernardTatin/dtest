@@ -3,7 +3,8 @@
 # with Digital Mars make
 #
 
-D = ldc2 -I=. -release
+compiler ?= dmd
+D = $(compiler) -I=. -release
 
 MAIN = dhex
 TOOLS = dhexd_tools
@@ -16,13 +17,13 @@ all: $(MAIN)
 $(MAIN): $(OBJS)
 	$(D) $(OBJS) -of=$@
 
-$(MAIN).o: $(MAIN).d 
+$(MAIN).o: $(MAIN).d
 	$(D) -c  $* -of=$@
 
-$(INFOS).o: $(INFOS).d 
+$(INFOS).o: $(INFOS).d
 	$(D) -c  $* -of=$@
 
-$(TOOLS).o: $(TOOLS).d 
+$(TOOLS).o: $(TOOLS).d
 	$(D) -c  $* -of=$@
 
 test: all
