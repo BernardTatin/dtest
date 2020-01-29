@@ -15,7 +15,7 @@ import std.format: sformat;
 import dhexd_tools;
 import dhexd_infos;
 
-/// size of hexedump line and of buffer to read input file
+/// size of hexdump line and of buffer to read input file
 const int chunck_size = 16;
 /// before and after the ASCII part
 const char separator = '|';
@@ -23,9 +23,10 @@ const char separator = '|';
 bool quiet = false;
 
 /**
- do the hexdump
- params:
-	the file_name
+ do the hexdump; contains nested functions to do the job
+
+ Params:
+	file_name = the file name
  */
 void wrap_on_file(immutable(string) file_name) {
 	void on_file() {
