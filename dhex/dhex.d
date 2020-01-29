@@ -1,11 +1,8 @@
-/*
+/**
  * dhexd.d
  * hexdump in D
- ***
- $ rm -fv *.obj *.exe
- $ dmd dhexd-tools.d dhex.d -of=dhex.exe \
- 	&& ./dhex.exe dhexd-tools.obj *.md
- ***
+ *
+ * Authors: Bernard Tatin, bernard.tatin@outlook.fr
  */
 
 module dhexd;
@@ -18,10 +15,18 @@ import std.format: sformat;
 import dhexd_tools;
 import dhexd_infos;
 
+/// size of hexedump line and of buffer to read input file
 const int chunck_size = 16;
+/// before and after the ASCII part
 const char separator = '|';
+/// print or don't print file names and more
 bool quiet = false;
 
+/**
+ do the hexdump
+ params:
+	the file_name
+ */
 void wrap_on_file(immutable(string) file_name) {
 	void on_file() {
 		auto byte2string(immutable(ubyte) a) {
