@@ -1,3 +1,12 @@
+/*
+ * hello-array.d
+ * code from https://tour.dlang.org/
+ * compile:
+ *      dmc hello-array.d -of=hello-array.exe
+ * test:
+ *      ./hello-array.exe
+ */
+
 module hello_array;
 
 import std.stdio;
