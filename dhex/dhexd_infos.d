@@ -10,7 +10,7 @@ import std.stdio: writef, writefln, File, chunks;
 import core.stdc.stdlib: exit;
 
 /// current version
-const string app_version = "0.2.2";
+const string app_version = "0.3.1";
 
 /**
  show a little help on the console
