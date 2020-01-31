@@ -9,7 +9,7 @@ module dhexd;
 
 import std.algorithm.iteration: reduce, map;
 import std.file: exists, isFile;
-import std.stdio: writef, writefln, File, chunks;
+import std.stdio: writef, writefln, File, chunks, stdin;
 import std.format: sformat;
 
 import dhexd_tools;
@@ -37,9 +37,14 @@ void wrap_on_file(immutable(string) file_name) {
 		pure string concat_strings(immutable(string) a, immutable(string) b) {
 			return a ~ b;
 		}
-		auto f = File(file_name, "r");
+		File f;
 		int address = 0;
 
+		if (file_name == "stdin") {
+			f = stdin;
+		} else {
+			f = File(file_name, "r");
+		}
 		foreach (ubyte[] buffer; chunks(f, chunck_size)) {
 			immutable int buffer_len = cast(int)buffer.length;
 			writef ("%08x %s", address,
@@ -59,18 +64,23 @@ void wrap_on_file(immutable(string) file_name) {
 	}
 
 
-	if (!exists(file_name) || !isFile(file_name)) {
-		writefln ("-> ERROR: %s is not a file", file_name);
+	if (file_name == "stdin") {
+		on_file();
 	} else {
-		if (!quiet) {
-			writefln("-> %s", file_name);
+		if (!exists(file_name) || !isFile(file_name)) {
+			writefln ("-> ERROR: %s is not a file", file_name);
+		} else {
+			if (!quiet) {
+				writefln("-> %s", file_name);
+			}
+			on_file ();
 		}
-		on_file ();
 	}
 }
 
 void main(string[] args) {
 	bool isInOptions = true;
+	bool hasFiles = false;
 	immutable string progname = args[0];
 
 	if (args.length == 1) {
@@ -93,11 +103,16 @@ void main(string[] args) {
 					break;
 				default:
 					isInOptions = false;
+					hasFiles = true;
 					wrap_on_file(a);
 					break;
 			}
 		} else {
+			hasFiles = true;
 			wrap_on_file(a);
 		}
+	}
+	if (!hasFiles) {
+		wrap_on_file("stdin");
 	}
 }
