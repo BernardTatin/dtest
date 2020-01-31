@@ -50,8 +50,8 @@ test: all
 	./$(EXE)  dhexd-tools.o README.md
 
 hdtest: all
-	hexdump -vC $(MAIN).o | tr -s ' ' > ref.log
-	./$(EXE) -q $(MAIN).o | tr -s ' '  > test.log
+	hexdump -vC $(odir)/$(MAIN).o | tr -s ' ' > ref.log
+	./$(EXE) -q $(odir)/$(MAIN).o | tr -s ' '  > test.log
 	diff ref.log test.log
 
 clean:
