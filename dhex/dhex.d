@@ -2,6 +2,9 @@
  * dhexd.d
  * hexdump in D
  *
+ * This code is not the best you can find. The aim is to
+ * test a great number of aspects of DLang.
+ *
  * Authors: Bernard Tatin, bernard.tatin@outlook.fr
  */
 
@@ -16,11 +19,11 @@ import dhexd_tools;
 import dhexd_infos;
 
 /// size of hexdump line and of buffer to read input file
-const int chunck_size = 16;
+private const int chunck_size = 16;
 /// before and after the ASCII part
-const char separator = '|';
+private const char separator = '|';
 /// print or don't print file names and more
-bool quiet = false;
+private bool quiet = false;
 
 /**
  do the hexdump; contains nested functions to do the job
@@ -29,7 +32,7 @@ bool quiet = false;
 	file_name = the file name
  */
 void wrap_on_file(immutable(string) file_name) {
-	void on_file() {
+	void on_file(File f) {
 		auto byte2string(immutable(ubyte) a) {
 			static char[3]  hbuf;
 			return  cast(string)sformat(hbuf[], "%02x ", a);
@@ -37,14 +40,8 @@ void wrap_on_file(immutable(string) file_name) {
 		pure string concat_strings(immutable(string) a, immutable(string) b) {
 			return a ~ b;
 		}
-		File f;
 		int address = 0;
 
-		if (file_name == "stdin") {
-			f = stdin;
-		} else {
-			f = File(file_name, "r");
-		}
 		foreach (ubyte[] buffer; chunks(f, chunck_size)) {
 			immutable int buffer_len = cast(int)buffer.length;
 			writef ("%08x %s", address,
@@ -65,7 +62,7 @@ void wrap_on_file(immutable(string) file_name) {
 
 
 	if (file_name == "stdin") {
-		on_file();
+		on_file(stdin);
 	} else {
 		if (!exists(file_name) || !isFile(file_name)) {
 			writefln ("-> ERROR: %s is not a file", file_name);
@@ -73,7 +70,7 @@ void wrap_on_file(immutable(string) file_name) {
 			if (!quiet) {
 				writefln("-> %s", file_name);
 			}
-			on_file ();
+			on_file (File(file_name, "r"));
 		}
 	}
 }
