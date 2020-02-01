@@ -1,4 +1,4 @@
-/*
+/**
  * dhexd_tools.d
  * tools for an hexdump in D
  *
@@ -8,9 +8,9 @@
 module dhexd_tools;
 
 /// byte value of space; chars before space are not printable 
-const ubyte CH_WHITE = 32;
+private const ubyte CH_WHITE = 32;
 /// byte value of the first ugly char; chars after this value are not printable 
-const ubyte CH_UGLY = 126;
+private const ubyte CH_UGLY = 126;
 
 /**
 	transform an unsigned byte in a printable char;

@@ -1,6 +1,8 @@
-/*
+/**
  * dhexd_infos.d
  * infos functions for an hexdump in D
+ *
+ * Authors: Bernard Tatin, bernard.tatin@outlook.fr
  */
 
 module dhexd_infos;
@@ -10,7 +12,7 @@ import std.stdio: writef, writefln, File, chunks;
 import core.stdc.stdlib: exit;
 
 /// current version
-const string app_version = "0.3.1";
+private const string app_version = "0.3.1";
 
 /**
  show a little help on the console
