@@ -15,8 +15,8 @@ import std.file: exists, isFile;
 import std.stdio: writef, writefln, File, chunks, stdin;
 import std.format: sformat;
 
-import dhexd_tools;
-import dhexd_infos;
+import dhexdlib.dhexd_tools;
+import dhexdlib.dhexd_infos;
 
 /// size of hexdump line and of buffer to read input file
 private const int chunck_size = 16;

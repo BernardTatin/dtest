@@ -7,8 +7,8 @@ compiler ?= dmd
 D = $(compiler) -I=. -release -color
 
 MAIN = dhex
-TOOLS = dhexd_tools
-INFOS = dhexd_infos
+TOOLS = dhexdlib/dhexd_tools
+INFOS = dhexdlib/dhexd_infos
 
 
 SRC = $(MAIN).d $(TOOLS).d $(INFOS).d
@@ -38,7 +38,13 @@ $(EXE): $(OBJS)
 $(odir)/%.o: %.d
 	$(D) -c  $< -of=$@
 
+$(odir)/%.o: dhexdlib/%.d
+	$(D) -c  $< -of=$@
+
 $(ddir)/%.html: %.d
+	$(D) -c -o- -D  $< -Df=$@
+
+$(ddir)/%.html: dhexdlib/%.d
 	$(D) -c -o- -D  $< -Df=$@
 
 

@@ -5,7 +5,7 @@
  * Authors: Bernard Tatin, bernard.tatin@outlook.fr
  */
 
-module dhexd_infos;
+module dhexdlib.dhexd_infos;
 
 
 import std.stdio: writef, writefln, File, chunks;
