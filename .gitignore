@@ -1,7 +1,8 @@
 # .gitignore
-!Makefile.GNU
 
-dhex
+*.code-workspace
+
+html-doc/
 
 *.exe
 *.obj
