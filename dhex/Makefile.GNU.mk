@@ -11,26 +11,31 @@ TOOLS = dhexdlib/dhexd_tools
 INFOS = dhexdlib/dhexd_infos
 
 
-SRC = $(MAIN).d $(TOOLS).d $(INFOS).d
+MAINSRC = $(MAIN).d
+LIBSRC = $(TOOLS).d $(INFOS).d
+SRC = $(MAINSRC) $(LIBSRC)
 odir = obj
 ddir = html-doc
+ddirlib = $(ddir)/dhexdlib
 
 EXE = $(MAIN).exe
 OBJS = $(addprefix $(odir)/, $(patsubst %.d,%.o,$(notdir $(SRC))))
-HTMLS = $(addprefix $(ddir)/, $(patsubst %.d,%.html,$(notdir $(SRC))))
+HTMLS = $(addprefix $(ddir)/, $(patsubst %.d,%.html,$(notdir $(MAINSRC)))) $(addprefix $(ddirlib)/, $(patsubst %.d,%.html,$(notdir $(LIBSRC))))
 
 
 all: $(odir) $(EXE)
 
-doc: $(ddir) $(HTMLS)
+doc: $(ddir) $(ddirlib) $(HTMLS)
+	@echo "HTMLS: $(HTMLS)"
 
 $(odir):
-	mkdir -p $(odir)
+	mkdir -p $(@)
 
 $(ddir):
-	@echo "OBJS : $(OBJS)"
-	@echo "HTMLS: $(HTMLS)"
-	mkdir -p $(ddir)
+	mkdir -p $(@)
+
+$(ddirlib):
+	mkdir -p $(@)
 
 $(EXE): $(OBJS)
 	$(D) $(OBJS) -of=$@
@@ -44,7 +49,7 @@ $(odir)/%.o: dhexdlib/%.d
 $(ddir)/%.html: %.d
 	$(D) -c -o- -D  $< -Df=$@
 
-$(ddir)/%.html: dhexdlib/%.d
+$(ddirlib)/%.html: dhexdlib/%.d
 	$(D) -c -o- -D  $< -Df=$@
 
 
