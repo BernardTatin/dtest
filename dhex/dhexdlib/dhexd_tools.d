@@ -5,7 +5,7 @@
  * Authors: Bernard Tatin, bernard.tatin@outlook.fr
  */
 
-module dhexd_tools;
+module dhexdlib.dhexd_tools;
 
 /// byte value of space; chars before space are not printable 
 private const ubyte CH_WHITE = 32;
