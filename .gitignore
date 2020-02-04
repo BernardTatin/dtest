@@ -13,3 +13,6 @@ html-doc/
 *.tmp
 *.log
 
+*.iml
+.idea/
+
