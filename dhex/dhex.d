@@ -82,34 +82,35 @@ void main(string[] args) {
 
 	if (args.length == 1) {
 		on_help(progname);
-	}
-	foreach (string a; args[1..$]) {
-		if (isInOptions) {
-			switch (a) {
-				case "-h":
-				case "--help":
+	} else {
+		foreach (string a; args[1..$]) {
+			if (isInOptions) {
+				switch (a) {
+					case "-h":
+					case "--help":
 					on_help(progname);
 					break;
-				case "-v":
-				case "--version":
+					case "-v":
+					case "--version":
 					on_version(progname);
 					break;
-				case "-q":
-				case "--quiet":
+					case "-q":
+					case "--quiet":
 					quiet = true;
 					break;
-				default:
+					default:
 					isInOptions = false;
 					hasFiles = true;
 					wrap_on_file(a);
 					break;
+				}
+			} else {
+				hasFiles = true;
+				wrap_on_file(a);
 			}
-		} else {
-			hasFiles = true;
-			wrap_on_file(a);
 		}
-	}
-	if (!hasFiles) {
-		wrap_on_file("stdin");
+		if (!hasFiles) {
+			wrap_on_file("stdin");
+		}
 	}
 }
