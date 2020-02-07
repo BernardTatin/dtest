@@ -8,8 +8,15 @@ compiler ?= dmd
 # choose the version  (debug | release)
 version ?= debug
 
+ifeq ($(compiler),dmd)
+	_version = -$(version)
+	_color = -color
+else
+	_version =
+	_color = --enable-color=true
+endif
 # basic compiler command
-D = $(compiler) -I=. -$(version) -color
+D = $(compiler) -I=. $(_version) $(_color)
 
 # file definitions
 MAIN = dhex
